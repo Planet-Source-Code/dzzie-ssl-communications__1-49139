@@ -1,0 +1,154 @@
+// Copyright (C) 2000-2002 Chilkat Software, Inc.
+// All Rights Reserved
+// Licensed Material - Chilkat Software, Inc.
+
+// Tweaked ChilkatSSL_4VB.idl : IDL source for using ChilkatSSL.dll with VB
+// Modifications for use with VB by David Zimmer, dzzie@yahoo.com
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ChilkatSSL_4VB.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	//------------------------------------------------------------------
+	//
+	// Chilkat SSL
+	//
+	//------------------------------------------------------------------
+
+	[
+		object,
+		uuid(90B8CE3F-BB37-4CA3-9E90-95030940F827),
+	
+		helpstring("ISecureChannel Interface"),
+		pointer_default(unique)
+	]
+	interface ISecureChannel : IUnknown
+	{
+		
+	HRESULT SendSecure(
+		[in] LPSTR data, 
+		[in] LONG numBytes
+	);
+		
+	HRESULT RecvSecure(
+		[in, out] LPSTR buffer, 
+		[in, out] LONG *numBytes
+	);
+		
+
+	HRESULT RecvSecureN(
+		[in, out] LPSTR buffer,
+		[in] LONG numBytes
+	);
+
+		
+	HRESULT SendSecure2(
+		[in] BSTR str
+	);
+		
+	HRESULT RecvString(
+		[in] LONG maxBytes,
+		[out, retval] BSTR *str
+	);
+		
+	HRESULT Inject(
+		[in] LONG data
+	);
+
+};
+	[
+		object,
+		uuid(6587FA3E-31B3-4ADC-BA07-CAE4A9BCC518),
+	
+		helpstring("ISecurePoint Interface"),
+		pointer_default(unique)
+	]
+	interface ISecurePoint : IUnknown
+	{
+
+	HRESULT Version(
+		[out, retval] LPSTR *pVal
+	);
+		
+	HRESULT UseSsl();
+	HRESULT UseTls();
+		
+	HRESULT UsePfx(
+		[in] LPSTR filename,
+		[in] LPSTR password
+	);
+		
+	HRESULT IsListening(
+		[out, retval] LONG *pVal
+	);
+
+	HRESULT ListenOnPort(
+		[in] LONG port
+	);
+
+	HRESULT ConnectToServer(
+		[in] LPSTR hostname,
+		[in] LONG port,
+		[out, retval] ISecureChannel **iChannel
+	);
+
+	HRESULT AcceptNextConnection(
+		[out, retval] ISecureChannel **iChannel
+	);
+
+	HRESULT SecureAsServer(
+		[in] LONG sd, 
+		[out, retval] ISecureChannel **iChannel
+	);
+
+	HRESULT SecureAsClient(
+		[in] long sd, 
+		[out, retval] ISecureChannel **iChannel
+	);
+
+	HRESULT UsePfx2(
+		[in] BSTR filename, 
+		[in] BSTR password
+	);
+
+	HRESULT ConnectToServer2(
+		[in] BSTR hostname,
+		[in] LONG port, 
+		[out, retval] ISecureChannel **iChannel
+	);
+
+	HRESULT SetDebugLog(
+		[in] LPSTR filename
+	);
+};
+
+
+[
+	uuid(9E45C534-E6BC-4C57-8D3F-07B988BAC8E7),
+	version(1.0),
+	helpstring("ChilkatSSL 4.0 for VB")
+]
+library CHILKATSSLLib_4VB
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(A8131A76-9AD0-4908-ABDE-B6B8BDED0A6F),
+		helpstring("SecurePoint Class")
+	]
+	coclass SecurePoint
+	{
+		[default] interface ISecurePoint;
+	};
+	[
+		uuid(390AF76B-7AE0-4343-9E7F-EDC74E0DEC6E),
+		helpstring("SecureChannel Class")
+	]
+	coclass SecureChannel
+	{
+		[default] interface ISecureChannel;
+	};
+};
